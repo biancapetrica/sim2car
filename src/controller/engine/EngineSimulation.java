@@ -227,8 +227,7 @@ public class EngineSimulation implements EngineInterface {
 				if (Globals.showGUI) {
 					CarView carV = new CarView(count, mapJ, car);
 					/* set color of client */
-					Color c = new Color((float) Math.random(),
-							(float) Math.random(), (float) Math.random());
+					Color c = chooseCarColor(car);
 					carV.setColor(c);
 					carsViews.add(carV);
 				}
@@ -257,6 +256,18 @@ public class EngineSimulation implements EngineInterface {
 		}
 		return rutes;
 
+	}
+
+	private Color chooseCarColor(GeoCar car) {
+		if (car.emergencyVehicle) {
+			return Color.RED;
+		}
+		Color c;
+		do {
+			c = new Color((float) Math.random(),
+					(float) Math.random(), (float) Math.random());
+		} while (c.equals(Color.RED));
+		return c;
 	}
 
 	List<GeoServer> getServersData(String route_index) {

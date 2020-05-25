@@ -226,12 +226,20 @@ public class GeoTrafficLightMaster extends Entity{
 	 * @param data
 	 */
 	public void addCarToQueue(ApplicationTrafficLightControlData data) {
+		// Key e format din id-ul strazii si directia de mers
 		Pair<Long, Integer> key = new Pair<Long, Integer>(data.getWayId(), data.getDirection());
 		
 		synchronized (updateLock) {
 			if (waitingQueue.containsKey(key)) {
+				//key - (way id, direction)  value - (firstCarWaitingTime, noCarsWaiting)
+				Long firtCarWaitingTime = waitingQueue.get(key).getFirst();
+				if (data.isEmergencyVehicle()) {
+					firtCarWaitingTime += Globals.maxWaitingTime;
+				}
 				Pair<Long, Integer> value = new Pair<Long, Integer>
-					(waitingQueue.get(key).getFirst(), waitingQueue.get(key).getSecond() + 1);
+					(firtCarWaitingTime, waitingQueue.get(key).getSecond() + 1);
+//				Pair<Long, Integer> value = new Pair<Long, Integer>
+//						(waitingQueue.get(key).getFirst(), waitingQueue.get(key).getSecond() + 1);
 
 				waitingQueue.put(key, value);
 			}

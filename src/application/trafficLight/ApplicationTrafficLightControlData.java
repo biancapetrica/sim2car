@@ -17,7 +17,12 @@ public class ApplicationTrafficLightControlData implements Serializable {
 	private int direction;
 	private MapPoint mapPoint;
 	private long timeStop;
-	
+	private boolean emergencyVehicle;
+
+	public boolean isEmergencyVehicle() { return emergencyVehicle; }
+	public void setEmergencyVehicle(boolean emergencyVehicle) {
+		this.emergencyVehicle = emergencyVehicle;
+	}
 	public long getTimeStop() {
 		return timeStop;
 	}
