@@ -32,13 +32,7 @@ import application.ApplicationType;
 import application.ApplicationUtils;
 import application.routing.RoutingApplicationParameters;
 import application.routing.RoutingApplicationServer;
-import model.GeoCar;
-import model.GeoCarRoute;
-import model.GeoServer;
-import model.GeoTrafficLightMaster;
-import model.MapPoint;
-import model.PeanoKey;
-import model.PixelLocation;
+import model.*;
 import model.OSMgraph.Node;
 import model.OSMgraph.Way;
 import model.mobility.MobilityEngine;
@@ -354,7 +348,7 @@ public final class EngineUtils {
 	 * @return
 	 */
 	private static TreeMap<Long,GeoTrafficLightMaster> readExistingTrafficLights(
-			String file, Viewer viewer, MobilityEngine mobilityEngine) {
+			String file, Viewer viewer, MobilityEngine mobilityEngine, GeoTrafficLightMastersServer mtlServer) {
 		
 		FileInputStream fstream = null;
 		TreeMap<Long,GeoTrafficLightMaster> trafficLights = new TreeMap<Long,GeoTrafficLightMaster>();
@@ -379,6 +373,8 @@ public final class EngineUtils {
 					if (master != null) {
 						trafficLights.put(master.getId(), master);
 						viewer.addTrafficLightMaster(master);
+						mtlServer.masterTrafficLights.add(master);
+						mtlServer.updateNeighbours(master);
 					}
 					
 					// traffic light master line
@@ -396,6 +392,8 @@ public final class EngineUtils {
 					
 					if (Globals.useTrafficLights || Globals.useDynamicTrafficLights)
 						addTrafficLightApps(master);
+
+
 					continue;
 				}
 				if (keyword.equals("nodes")) {
@@ -436,7 +434,13 @@ public final class EngineUtils {
 				ex.printStackTrace();
 			}
 		}
+		System.out.println("Read from existing TL");
 		System.out.println("traffic lights " + trafficLights.size());
+		System.out.println("traffic lights " + mtlServer.masterTrafficLights.size());
+		System.out.println("traffic lights " + mtlServer.masterTrafficLightsNeighbours.keySet().size());
+		for (Map.Entry<Long, List<GeoTrafficLightMaster>> entry : mtlServer.masterTrafficLightsNeighbours.entrySet()) {
+			System.out.println("MTL: " + entry.getKey() + " has neighbours: " + entry.getValue().size());
+		}
 		return trafficLights;
 	}
 	
@@ -449,7 +453,7 @@ public final class EngineUtils {
 	 * @return
 	 */
 	private static TreeMap<Long,GeoTrafficLightMaster> readTrafficLights(
-			String inFile, String outFile, Viewer viewer, MobilityEngine mobilityEngine) {
+			String inFile, String outFile, Viewer viewer, MobilityEngine mobilityEngine, GeoTrafficLightMastersServer mtlServer) {
 		
 		FileInputStream fstream = null;
 		TreeMap<Long,GeoTrafficLightMaster> trafficLights = new TreeMap<Long,GeoTrafficLightMaster>();
@@ -508,6 +512,9 @@ public final class EngineUtils {
 				//if another master traffic light exists
 				if (!viewer.addTrafficLightViews(trafficLight)) {
 					trafficLights.remove(trafficLight.getId());
+				} else {
+					mtlServer.masterTrafficLights.add(trafficLight);
+					mtlServer.updateNeighbours(trafficLight);
 				}
 			}
 			br.close();
@@ -524,6 +531,13 @@ public final class EngineUtils {
 				ex.printStackTrace();
 			}
 		}
+		System.out.println("Read from files TL");
+		System.out.println("traffic lights " + trafficLights.size());
+		System.out.println("traffic lights " + mtlServer.masterTrafficLights.size());
+		System.out.println("traffic lights " + mtlServer.masterTrafficLightsNeighbours.keySet().size());
+		for (Map.Entry<Long, List<GeoTrafficLightMaster>> entry : mtlServer.masterTrafficLightsNeighbours.entrySet()) {
+			System.out.println("MTL: " + entry.getKey() + " has neighbours: " + entry.getValue().size());
+		}
 		return trafficLights;
 	}
 	
@@ -536,15 +550,15 @@ public final class EngineUtils {
 	 * @return
 	 */
 	static TreeMap<Long,GeoTrafficLightMaster> getTrafficLights(String trafficLightListFilename,
-			String trafficLightsLoaded, Viewer viewer, MobilityEngine mobilityEngine) {
+																String trafficLightsLoaded, Viewer viewer, MobilityEngine mobilityEngine, GeoTrafficLightMastersServer mtlServer) {
 
 		/* check if file with traffic lights exists */
 		File file = new File(trafficLightsLoaded);
 		if (file.exists() && !file.isDirectory()) {
 			/* read the traffic lights configuration from here */
-			return readExistingTrafficLights(trafficLightsLoaded, viewer, mobilityEngine);
+			return readExistingTrafficLights(trafficLightsLoaded, viewer, mobilityEngine, mtlServer);
 		}
-		return readTrafficLights(trafficLightListFilename, trafficLightsLoaded, viewer, mobilityEngine);
+		return readTrafficLights(trafficLightListFilename, trafficLightsLoaded, viewer, mobilityEngine, mtlServer);
 	}
 	
 	

@@ -706,6 +706,11 @@ public class GeoCar extends Entity {
 			String city = SimulationEngine.getInstance().getMapConfig().getCity();
 			
 			city += "/";
+			if (!Globals.activeApps.contains("ROUTING"))
+				city += "original_traces/";
+			else
+				city += "routed_traces/";
+
 			if (Globals.useTrafficLights)
 				city += "TL";
 			if (Globals.useDynamicTrafficLights)

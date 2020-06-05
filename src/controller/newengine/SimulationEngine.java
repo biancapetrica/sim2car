@@ -106,7 +106,7 @@ public class SimulationEngine implements EngineInterface {
 		entities.putAll(EngineUtils.getServers(getMapConfig().getAccessPointsFilename(), viewer, mobilityEngine) );
 		if (Globals.useTrafficLights || Globals.useDynamicTrafficLights) {
 			entities.putAll(EngineUtils.getTrafficLights(getMapConfig().getTrafficLightsFilename(),
-					getMapConfig().getTrafficLightsLoaded(), viewer, mobilityEngine));
+					getMapConfig().getTrafficLightsLoaded(), viewer, mobilityEngine, mtlServer));
 		}
 		
 		if (Globals.activeApplications.contains(ApplicationType.ROUTING_APP)) {
@@ -136,8 +136,6 @@ public class SimulationEngine implements EngineInterface {
 						if (trafficLight.getActive() == 1) {
 							trafficLight.start();
 						}
-						mtlServer.masterTrafficLights.add(trafficLight);
-						mtlServer.updateNeighbours(trafficLight);
 					}
 				}
 				
