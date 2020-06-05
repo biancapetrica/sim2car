@@ -326,18 +326,18 @@ public class RoutingApplicationCar extends Application {
 	 */
 	public void computeRouteReachDestinationValues() {
 		String value;
-		/*
-		if (this.car.isReachDestination()) {
-			value = String.valueOf(car.timeReachDest - car.startTime);
-			
-			// [km/h]
-			double avgSpeed = (car.distanceFromStart / (car.timeReachDest - car.startTime))
-					*3.6;
-			double avgFuelConsumption = ComputeAverageFuelConsumption.computeAverageFuelConsumption(car.fuelFromStart, 
-					(car.timeReachDest - car.startTime));
-			value += " " + avgSpeed + " " + avgFuelConsumption;		
-			timeReachDestination.put(car.getId(), value);
-		}*/
+		
+//		if (this.car.isReachDestination()) {
+//			value = String.valueOf(car.timeReachDest - car.startTime);
+//			
+//			// [km/h]
+//			double avgSpeed = (car.distanceFromStart / (car.timeReachDest - car.startTime))
+//					*3.6;
+//			double avgFuelConsumption = ComputeAverageFuelConsumption.computeAverageFuelConsumption(car.fuelFromStart, 
+//					(car.timeReachDest - car.startTime));
+//			value += " " + avgSpeed + " " + avgFuelConsumption;		
+//			timeReachDestination.put(car.getId(), value);
+//		}
 	}
 
 	@Override

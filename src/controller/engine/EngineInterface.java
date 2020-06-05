@@ -7,6 +7,7 @@ import java.util.List;
 import model.GeoCar;
 import model.GeoServer;
 import model.GeoTrafficLightMaster;
+import model.GeoTrafficLightMastersServer;
 
 /** 
  * The interface used for implementing the simulators core engine
@@ -21,4 +22,5 @@ public interface EngineInterface {
 	public List<GeoCar> getPeers();
 	public List<GeoServer> getServers();
 	public List<GeoTrafficLightMaster> getMasterTrafficLights();
+	public GeoTrafficLightMastersServer getMasterTrafficLightsServer();
 }

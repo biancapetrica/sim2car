@@ -15,10 +15,7 @@ import application.ApplicationType;
 import application.routing.RoutingApplicationCar;
 import application.routing.RoutingApplicationParameters;
 import application.trafficLight.ApplicationTrafficLightControl;
-import model.Entity;
-import model.GeoCar;
-import model.GeoServer;
-import model.GeoTrafficLightMaster;
+import model.*;
 import model.mobility.MobilityEngine;
 import model.parameters.Globals;
 import model.parameters.MapConfig;
@@ -68,6 +65,9 @@ public class SimulationEngine implements EngineInterface {
 	/** Simulation time */
 	private long time = 0;
 
+	/** The server that keeps track of all traffic light masters*/
+	public GeoTrafficLightMastersServer mtlServer;
+
 	private static final SimulationEngine _instance = new SimulationEngine();
 	private static Object lock = null;
 
@@ -86,6 +86,7 @@ public class SimulationEngine implements EngineInterface {
 		viewer = new Viewer(mapConfig);
 		entities = new TreeMap<Long,Entity>();
 		threadPool = ThreadPool.getInstance();
+		mtlServer = new GeoTrafficLightMastersServer(-1);
 		//EngineUtils.enhanceStreetGraph(mobilityEngine);
 	}
 
@@ -135,6 +136,8 @@ public class SimulationEngine implements EngineInterface {
 						if (trafficLight.getActive() == 1) {
 							trafficLight.start();
 						}
+						mtlServer.masterTrafficLights.add(trafficLight);
+						mtlServer.updateNeighbours(trafficLight);
 					}
 				}
 				
@@ -270,9 +273,14 @@ public class SimulationEngine implements EngineInterface {
 		return servers;
 	}
 
-	public MapConfig getMapConfig() {
-		return mapConfig;
+	@Override
+	public GeoTrafficLightMastersServer getMasterTrafficLightsServer() {
+		return mtlServer;
 	}
+
+	public MapConfig getMapConfig() {
+	return mapConfig;
+}
 
 	@Override
 	public void stopSimulation() {

@@ -3,10 +3,7 @@ package controller.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Entity;
-import model.GeoCar;
-import model.GeoServer;
-import model.GeoTrafficLightMaster;
+import model.*;
 import model.network.Message;
 import utils.tracestool.Utils;
 
@@ -101,7 +98,10 @@ public class NetworkWiFi extends NetworkInterface {
 	
 	public List<NetworkInterface> discoverClosestsTrafficLightMasters() {
 		Entity owner = getOwner();
-		ArrayList<GeoTrafficLightMaster> mtl = (ArrayList<GeoTrafficLightMaster>) owner.getMasterTrafficLights();
+		GeoTrafficLightMastersServer mtlServer = owner.getMasterTrafficLightsServer();
+		return mtlServer.getClosestsTrafficLightMastersNetworks((GeoTrafficLightMaster) owner, this.getType());
+
+		/*ArrayList<GeoTrafficLightMaster> mtl = (ArrayList<GeoTrafficLightMaster>) owner.getMasterTrafficLights();
 		
 		GeoTrafficLightMaster mtlInRange1 = mtl.get(0);
 		GeoTrafficLightMaster mtlInRange2 = mtl.get(1);;
@@ -144,16 +144,16 @@ public class NetworkWiFi extends NetworkInterface {
 
 			}
 		}
-		
+
 		List<NetworkInterface> ret = new ArrayList<NetworkInterface>();
 		
 		ret.add(mtlInRange3.getNetworkInterface(this.getType()));
 		ret.add(mtlInRange2.getNetworkInterface(this.getType()));
 		ret.add(mtlInRange1.getNetworkInterface(this.getType()));
 
-		return ret;
+		return ret;*/
 	}
-	
+
 	
 	
 	/* Discover the closest 3 traffic light masters */

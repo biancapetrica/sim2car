@@ -33,7 +33,7 @@ public class OsmTileLoader implements TileLoader {
     protected TileLoaderListener listener;
 
     public OsmTileLoader(TileLoaderListener listener) {
-        headers.put("User-Agent", "Sim2Car/1.");
+        headers.put("User-Agent", "Sim2Car");
         headers.put("Accept", "text/html, image/png, image/jpeg, image/gif, */*");
         this.listener = listener;
     }

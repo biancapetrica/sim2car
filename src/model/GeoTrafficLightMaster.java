@@ -29,7 +29,7 @@ import model.parameters.Globals;
  * @author Andreea
  *
  */
-public class GeoTrafficLightMaster extends Entity{
+public class GeoTrafficLightMaster extends Entity implements Comparable<GeoTrafficLightMaster>{
 	
 	/** Reference to mobility */
 	private MobilityEngine mobility;
@@ -267,11 +267,11 @@ public class GeoTrafficLightMaster extends Entity{
 	 */
 	public void sendDataToNeighbors(MapPoint mapPoint, Long wayId, int direction, int queueSize) {
 		NetworkInterface net = this.getNetworkInterface(NetworkType.Net_WiFi);
+		// Get network interface of the 3 closest TLMs and send sync message on each TLM's network
 		List<NetworkInterface> discoveredTrafficLightMasters = ((NetworkWiFi)net).discoverClosestsTrafficLightMasters();
 
 		for (NetworkInterface discoveredTrafficLightMaster : discoveredTrafficLightMasters) {
-			
-			Message msg = new Message(this.getId(), discoveredTrafficLightMaster.getOwner().getId(), null, 
+			Message msg = new Message(this.getId(), discoveredTrafficLightMaster.getOwner().getId(), null,
 					MessageType.SYNCHRONIZE_TRAFFIC_LIGHTS, ApplicationType.SYNCHRONIZE_INTERSECTIONS_APP);
 			
 			SynchronizeIntersectionsData data = new SynchronizeIntersectionsData(
@@ -285,15 +285,21 @@ public class GeoTrafficLightMaster extends Entity{
 	
 	public void synchronizeWithNeighbors(SynchronizeIntersectionsData data) {
 		Pair<Long, Integer> key = new Pair<Long, Integer>(data.getWayId(), data.getDirection());
-		
-		long wayFromMaster = data.getFromNode().wayId;
-		long wayMaster = this.node.wayId;
+
+		Node nodeSourceMaster = data.getFromNode();
+		Node nodeCurrentMaster = this.node;
+
+		long waySourceMaster = nodeSourceMaster.wayId;
+		long wayCurrentMaster = nodeCurrentMaster.wayId;
 		//Get all ways from this intersection (where this master traffic light is situated)
-		List<Long> thisIntersection = mobility.streetsGraph.get(wayMaster).neighs.get(this.node.id);
-		
+		// Collect all neighbours streets(ways) from current intersection
+		List<Long> thisIntersection = mobility.streetsGraph.get(wayCurrentMaster).neighs.get(nodeCurrentMaster.id);
+
 		long link = 0;
 		//Get all ways from the first intersection (traffic light)
-		for (long wayFromFirstIntersection : mobility.streetsGraph.get(wayFromMaster).neighs.get(data.getFromNode().id)) {
+		// Collect all neighbours streets(ways) from source intersection from which the sync request came
+		// and search for a link between these 2 intersections
+		for (long wayFromFirstIntersection : mobility.streetsGraph.get(waySourceMaster).neighs.get(nodeSourceMaster.id)) {
 			if (thisIntersection.contains(wayFromFirstIntersection)) {
 				link = wayFromFirstIntersection;
 				break;
@@ -307,7 +313,7 @@ public class GeoTrafficLightMaster extends Entity{
 		}
 		else {
 			for (TrafficLightView k : trafficLightViewList) {
-	
+
 				if (link == k.getWayId()) {
 					key = new Pair<Long, Integer>(k.getWayId(), k.getDirection());
 					if (waitingQueue.containsKey(key)) {
@@ -328,14 +334,14 @@ public class GeoTrafficLightMaster extends Entity{
 	public void init() {
 		mobility.addTrafficLight(this);
 	}
-	
+
 	/**
 	 * First initialization of the GeoTrafficLight Object
 	 */
 	public void start() {
 		init();
-	}	
-	
+	}
+
 	public int getActive() {
 		return this.active;
 	}
@@ -421,5 +427,11 @@ public class GeoTrafficLightMaster extends Entity{
 		return result;
 	}
 
-	
+	@Override
+	public int compareTo(GeoTrafficLightMaster geoTrafficLightMaster) {
+		if (this.getId() == geoTrafficLightMaster.getId()) {
+			return 0;
+		}
+		return 1;
+	}
 }

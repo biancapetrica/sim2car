@@ -30,8 +30,8 @@ public class TestGeoCar {
 		Globals.setUp(args);
 		
 		TreeMap<Long, Way> graph = EngineUtils.loadGraph(
-				"res\\Xml\\streets_rez_san-francisco.osm",
-				"res\\Xml\\streets_graph_san-francisco.osm");
+				"processeddata/maps/XmlSanFrancisco/streets_rez_sanfrancisco.osm",
+				"processeddata/maps/XmlSanFrancisco/streets_graph_sanfrancisco.osm");
 		
 		MapConfig mapConfig = MapConfiguration.getInstance(Globals.propertiesFile);
 		Globals.zoomLevel += mapConfig.getQuot();

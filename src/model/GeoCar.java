@@ -39,7 +39,8 @@ public class GeoCar extends Entity {
 	 * checked against traffic rule and will replace currentPos.
 	 */
 	private MapPoint nextPos = null;
-	public boolean emergencyVehicle = NextBool(80);
+	//public boolean emergencyVehicle = NextBool(80);
+	public boolean emergencyVehicle = false;
 
 	/** The speed of the car. */
 	public double speed = 0.0;
@@ -100,7 +101,8 @@ public class GeoCar extends Entity {
 		this.setCurrentPos(null);
 		this.setNextPos(null);
 		this.beginNewRoute = true;
-		this.emergencyVehicle = NextBool(20);
+		//this.emergencyVehicle = NextBool(20);
+		this.emergencyVehicle = false;
 	}
 
 	public void setSpeed(double speed) {

@@ -6,7 +6,7 @@ public class RoutingApplicationParameters {
 	/** RoutingApplication in debug mode */
 	public static boolean routingapp_debug = true;
 	/** The simulation interval (seconds) for which are kept the road costs are kept */
-	public static long SamplingInterval = 1800;
+	public static long SamplingInterval = 3602;
 
 	/** Searching algorithm maximum path */
 	public static int maxdepth = 10; 

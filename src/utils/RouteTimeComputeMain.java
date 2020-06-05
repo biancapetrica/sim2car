@@ -75,7 +75,7 @@ public class RouteTimeComputeMain {
 		
 	}
 	public static void main(String[] args) {
-		computeAverageTravelTime("beijing");
+		computeAverageTravelTime("rome/DTL");
 	}
 
 }

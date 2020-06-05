@@ -66,10 +66,10 @@ public class TestSingleRomeTrace extends JFrame {
 		int count = 0;
 		while ((line = raf.readLine()) != null) {
 			
-			String[] props = line.split(" ");
+			String[] props = line.split(", ");
 			
-			Double pointX = Double.parseDouble(props[0]);
-			Double pointY = Double.parseDouble(props[1]);
+			Double pointX = Double.parseDouble(props[1]);
+			Double pointY = Double.parseDouble(props[2]);
 			
 			
 			MapMarkerDot mkd = new MapMarkerDot(pointX, pointY);
@@ -92,6 +92,6 @@ public class TestSingleRomeTrace extends JFrame {
 	public static void main(String[] args) throws Exception {
 		TestSingleRomeTrace frame = new TestSingleRomeTrace();
 		frame.setVisible(true);
-		frame.addCab("res\\res\\romecabs\\22.txt");
+		frame.addCab("rawdata/traces/romecabs/22.txt");
 	}
 }

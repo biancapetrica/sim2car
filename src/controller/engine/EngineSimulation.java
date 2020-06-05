@@ -25,12 +25,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Entity;
-import model.GeoCar;
-import model.GeoServer;
-import model.GeoTrafficLightMaster;
-import model.MapPoint;
-import model.PixelLocation;
+import model.*;
 import model.OSMgraph.Way;
 import model.parameters.Globals;
 import model.parameters.MapConfig;
@@ -511,6 +506,11 @@ public class EngineSimulation implements EngineInterface {
 	@Override
 	public List<GeoTrafficLightMaster> getMasterTrafficLights() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeoTrafficLightMastersServer getMasterTrafficLightsServer() {
 		return null;
 	}
 }

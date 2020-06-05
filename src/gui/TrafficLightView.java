@@ -23,7 +23,6 @@ public class TrafficLightView {
 
 	JMapViewer map;
 
-
 	public TrafficLightView(JMapViewer map, MapPoint currentPoint,
 			long wayId, int direction) {
 		Globals.parseArgs(this, Main.args );
