@@ -8,7 +8,6 @@
 		
 	<path id = "project_classpath">
 		<pathelement location = "${build_dir}"/>
-		<pathelement location ="${lib}/JMapViewer_29618.jar"/>
 		<pathelement location ="${lib}/jfreechart-1.0.15.jar"/>
 		<pathelement location ="${lib}/jcommon-1.0.18.jar"/>
 		<pathelement location ="${lib}/jcommander-master.jar"/>

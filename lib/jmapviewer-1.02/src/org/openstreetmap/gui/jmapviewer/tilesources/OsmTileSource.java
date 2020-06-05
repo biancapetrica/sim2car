@@ -8,7 +8,7 @@ public class OsmTileSource {
     /**
      * The default "Mapnik" OSM tile source URL
      */
-    public static final String MAP_MAPNIK = "http://tile.openstreetmap.org";
+    public static final String MAP_MAPNIK = "https://maps.wikimedia.org/osm-intl/";
 
     /**
      * The default "Mapnik" OSM tile source.
